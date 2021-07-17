@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.layne.mapper.BlogToTagMapper">
+
+    <insert id="saveBlogToTag" parameterType="java.lang.Long">
+        insert into t_blog_tags(blogs_id,tags_id) values(#{blogId},#{tagId});
+    </insert>
+
+    <update id="updateBlogToTag" parameterType="java.lang.Long">
+        update
+            t_blog_tags
+        set
+            tags_id = #{tagsId}
+        where
+            blogs_id = #{blogsId};
+    </update>
+</mapper>

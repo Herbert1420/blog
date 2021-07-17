@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.layne.mapper.CommentMapper">
+
+    <select id="getByBlogIdAndParentmentIdNull" resultType="com.layne.pojo.Comment" parameterType="java.lang.Long">
+        SELECT
+            id,avatar,content,create_time,email,nickname,blog_id,parent_comment_id,admin_comment
+        FROM
+            t_comment
+        where
+            blog_id = #{blogId}
+        and
+            parent_comment_id IS NULL
+        order by
+            create_time
+        asc;
+    </select>
+
+
+    <select id="getByParentCommentId" parameterType="java.lang.Long" resultType="com.layne.pojo.Comment">
+        SELECT
+            id,avatar,content,create_time,email,nickname,blog_id,parent_comment_id,admin_comment
+        FROM
+            t_comment
+        where
+            parent_comment_id = #{ParentCommentId}
+        order by
+            create_time
+        asc;
+    </select>
+</mapper>

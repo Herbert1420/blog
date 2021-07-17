@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>分类管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/mine.css">
+</head>
+<body>
+<!--导航-->
+<nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">Blog</h2>
+            <a href="#" class="m-item item m-mobile-hide"><i class="small home icon"></i> 博客</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="small idea icon"></i> 分类</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="small tags icon"></i> 标签</a>
+            <div class="right m-item m-mobile-hide menu">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img src="../../static/images/head.jpg" class="ui avatar big image">
+                        Layne
+                    </div>
+                    <i class="ui dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">注销用户</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--手机端显示 ,且点击时隐藏导航的class : m-mobile-hide-->
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<!--二级导航-->
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" th:href="@{/admin/types/input}" class="item">新增</a>
+            <a href="#" th:href="@{/admin/types}" class="active teal item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+        <!--提示-->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}" >
+            <i class="close icon"></i>
+            <div class="header">提示:</div>
+            <p th:text="${message}">添加成功</p>
+        </div>
+        <!--表格-->
+        <table class="ui center aligned celled table">
+            <thead>
+                <th>序号</th>
+                <th>名称</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr th:each="type,iterStat : ${page.records}">
+                    <td th:text="${iterStat.count}">1</td>
+                    <td th:text="${type.name}">学习</td>
+                    <td>
+                        <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
+                        <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red button">删除</a>
+                    </td>
+                </tr>
+
+
+            </tbody>
+            <tfoot>
+                <th colspan="6" >
+                    <div class="ui small left floated pagination menu" th:if="${page.total>page.size}">
+                        <a th:href="@{/admin/types(pageNum=${page.current}-1)}" class="item" th:unless="${page.current==1}">
+                            上一页
+                        </a>
+                        <a th:href="@{/admin/types(pageNum=${page.current}+1)}" class="item" th:unless="${page.current==maxPage}">
+                            下一页
+                        </a>
+
+
+                    </div>
+                    <a href="#" th:href="@{/admin/types/input}" class="ui right floated blue button">新增</a>
+                </th>
+            </tfoot>
+        </table>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    <!--移动端菜单按钮-->
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown({
+        on:'hover'
+    });
+    //点击关闭提示
+    $('.message .close')
+        .on('click',function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        })
+
+</script>
+</body>
+</html>

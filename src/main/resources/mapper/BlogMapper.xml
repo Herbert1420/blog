@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.layne.mapper.BlogMapper">
+
+
+    <select id="getCountByTitle" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+            count(id)
+        from
+            t_blog
+        where
+            title = #{title};
+    </select>
+
+
+
+    <insert id="saveBlog" parameterType="com.layne.pojo.Blog" >
+        INSERT INTO t_blog(title,content,first_picture,flag,views,appreciation,share_statement,commentabled,published,recommend,create_time,update_time,type_id,user_id,description)
+        VALUES(#{title},#{content},#{firstPicture},#{flag},#{views},#{appreciation},#{shareStatement},#{commentabled},#{published},#{recommend},#{createTime},#{updateTime},#{typeId},#{userId},#{description});
+    </insert>
+
+    <select id="getRecommendBlog" resultType="com.layne.pojo.Blog" parameterType="java.lang.Integer">
+        SELECT
+            id,title
+        FROM
+            t_blog
+        WHERE
+            recommend = TRUE
+        ORDER BY
+            update_time
+        DESC
+        limit 0,#{size};
+    </select>
+    <select id="getGroupYear" resultType="java.lang.String">
+        SELECT YEAR(update_time) as `year` FROM t_blog GROUP BY `year` ORDER BY `year` DESC;
+    </select>
+    <select id="selectListByYear" resultType="com.layne.pojo.Blog" parameterType="java.lang.String">
+        SELECT * FROM t_blog WHERE YEAR(update_time) = #{year} ORDER BY update_time ASC;
+    </select>
+
+    <update id="updateViewById" >
+        update t_blog set views = #{views} where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.layne.mapper.TypeMapper">
+
+    <insert id="save" parameterType="com.layne.pojo.Type">
+        insert into t_type(name) values (#{name});
+    </insert>
+
+    <select id="getOneById" resultType="com.layne.pojo.Type" parameterType="java.lang.Long">
+        select
+            id , name
+        from
+            t_type
+        where
+            id = #{id};
+    </select>
+
+    <select id="getCountByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+            count(id)
+        from
+            t_type
+        where
+            name = #{name};
+    </select>
+
+    <update id="updateType"  parameterType="com.layne.pojo.Type">
+        update
+            t_type
+        set
+            name = #{name}
+        where
+            id = #{id}
+    </update>
+
+    <delete id="deleteType" parameterType="java.lang.Long">
+        delete from t_type where id = #{id};
+    </delete>
+
+    <select id="getTypeByCount" parameterType="java.lang.Integer" resultMap="MyType">
+        SELECT
+            t.name as name , t.id as id , COUNT(b.type_id) as blogsLength
+        FROM
+            t_type t
+        JOIN
+            t_blog b
+        ON
+            t.`id` = b.type_id
+        GROUP BY
+            b.type_id
+        ORDER BY
+            blogsLength
+        desc limit 0,#{size};
+    </select>
+    <resultMap id="MyType" type="com.layne.pojo.Type">
+        <id column="id" property="id"></id>
+        <id column="name" property="name"></id>
+        <id column="blogsLength" property="blogsLength"></id>
+    </resultMap>
+</mapper>
