@@ -22,7 +22,6 @@ public class LogAspect {
 
     @Pointcut("execution(* com.layne.controller.*.*(..))")
     public void log(){
-
     }
 
     @Before("log()")
@@ -34,8 +33,7 @@ public class LogAspect {
         String classMethod = joinpoint.getSignature().getDeclaringTypeName() + "." + joinpoint.getSignature().getName();
         Object[] args = joinpoint.getArgs();
         RequestLog requestLog = new RequestLog(url,ip,classMethod,args);
-
-
+        
         logger.info("Request : {}",requestLog);
     }
 
@@ -46,9 +44,6 @@ public class LogAspect {
 
     @AfterReturning(returning = "result" ,pointcut = "log()")
     public void doAfterReturn(Object result){
-
-
-
         logger.info("Result : {}", result);
     }
 
